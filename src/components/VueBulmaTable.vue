@@ -53,7 +53,7 @@
                     </table>
                 </div>
             </div>
-            <footer class="card-footer">
+            <footer class="card-footer vbt-footer">
                 <div class="columns">
                     <div class="column is-full">
                         <div v-if="pagination">
@@ -690,10 +690,10 @@ export default {
         rowClasses(column) {
             let classes = "";
 
-            let default_text_alignment = "text-center";
+            let default_text_alignment = "has-text-centered";
 
             //decide text alignment class - starts here
-            let alignments = ["text-justify","text-right","text-left","text-center"];
+            let alignments = ["has-text-justified	","has-text-left","has-text-right","has-text-centered"];
             if (_.has(column, "row_text_alignment") && _.includes(alignments, column.row_text_alignment)) {
                 classes = classes + " " + column.row_text_alignment;
             } else {
@@ -713,10 +713,10 @@ export default {
         columnClasses(column) {
             let classes = "";
 
-            let default_text_alignment = "text-center";
+            let default_text_alignment = "has-text-centered";
 
             //decide text alignment class - starts here
-            let alignments = ["text-justify","text-right","text-left","text-center"];
+            let alignments = ["has-text-justified	","has-text-left","has-text-right","has-text-centered"];
             if (_.has(column, "column_text_alignment") && _.includes(alignments, column.column_text_alignment)) {
                 classes = classes + " " + column.column_text_alignment;
             } else {
@@ -956,3 +956,28 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    .vbt-select-all-checkbox {
+        margin-bottom: 20px;
+    }
+    .vbt-sort-cursor {
+        cursor: pointer;
+    }
+    .custom-control-label {
+        vertical-align: top;
+    }
+    .vbt-column-header {
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */
+    }
+    .input-group-append.vbt-global-search-clear {
+        cursor: pointer;
+    }
+
+    .vbt-footer {
+        padding: 10px;
+    }
+</style>

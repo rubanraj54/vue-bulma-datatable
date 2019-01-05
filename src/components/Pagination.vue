@@ -2,31 +2,31 @@
     <div>
         <nav class="pagination is-right" role="navigation" aria-label="pagination">
             <ul class="pagination-list">
-                <li :class="{'disabled' : disablePreviousButton}" class="page-item" @click.prevent="pageHandler(page-1)">
+                <li :class="{'disabled' : disablePreviousButton}" class="pagination-item" @click.prevent="pageHandler(page-1)">
                     <a class="pagination-link" href="" aria-label="Previous">
                         <span aria-hidden="true">
-                            <slot name="vbt-paginataion-previous-button">
+                                <slot name="vbt-paginataion-previous-button">
 
-                            </slot>
-                        </span>
+                                </slot>
+                            </span>
                     </a>
                 </li>
                 <template v-if="!isEmpty">
-                    <li v-if="showLeftDot" @click.prevent="pageHandler(1)">
-                        <a class="pagination-link" href=""> 1 </a>
-                    </li>
-                    <li v-if="showLeftDot">
-                        <span class="pagination-ellipsis">&hellip;</span>
-                    </li>
-                    <li  v-for="index in range" :key="index" @click.prevent="pageHandler(index)">
-                        <a class="pagination-link" v-bind:class="{ 'is-current':  (index == page)}" href="">{{index}}</a>
-                    </li>
-                    <li v-if="showRightDot">
-                        <span class="pagination-ellipsis">&hellip;</span>
-                    </li>
-                    <li v-if="showRightDot" @click.prevent="pageHandler(totalPages)">
-                        <a class="pagination-link" href=""> {{totalPages}} </a>
-                    </li>
+                        <li v-if="showLeftDot" @click.prevent="pageHandler(1)">
+                            <a class="pagination-link" href=""> 1 </a>
+                        </li>
+                        <li v-if="showLeftDot">
+                            <span class="pagination-ellipsis">&hellip;</span>
+                        </li>
+                        <li  v-for="index in range" :key="index" @click.prevent="pageHandler(index)">
+                            <a class="pagination-link" v-bind:class="{ 'is-current':  (index == page)}" href="">{{index}}</a>
+                        </li>
+                        <li v-if="showRightDot">
+                            <span class="pagination-ellipsis">&hellip;</span>
+                        </li>
+                        <li v-if="showRightDot" @click.prevent="pageHandler(totalPages)">
+                            <a class="pagination-link" href=""> {{totalPages}} </a>
+                        </li>
                 </template>
 
                 <template v-else>
@@ -34,7 +34,7 @@
                         <span class="pagination-ellipsis">&hellip;</span>
                     </li>
                 </template>
-                <li :class="{'disabled' : disableNextButton}" class="page-item" @click.prevent="pageHandler(page+1)">
+                <li :class="{'disabled' : disableNextButton}" class="pagination-item" @click.prevent="pageHandler(page+1)">
                     <a class="pagination-link" href="" aria-label="Next">
                         <span aria-hidden="true">
                             <slot name="vbt-paginataion-next-button">
@@ -44,22 +44,30 @@
                     </a>
                 </li>
                 <!-- Number of rows per page starts here -->
-                <!-- <div class="dropdown show vbt-per-page-dropdown">
-                    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{per_page}}
-                    </a>
-
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a v-for="(option, key, index) in per_page_options" :key="index" class="dropdown-item" href="" @click.prevent="perPageHandler(option)" v-bind:class="{ active:  (option == per_page)}">
-                            {{option}}
-                        </a>
+                <div class="dropdown" :class="{'is-active' : dropdown_active}">
+                    <div class="dropdown-trigger" @click="dropdown_active = !dropdown_active">
+                        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                            <span>{{per_page}}</span>
+                            <span class="icon is-small">
+                                	&#8964;
+                            </span>
+                        </button>
                     </div>
-                </div> -->
+
+                    <div class="dropdown-menu" role="menu">
+                        <div s="dropdown-content">
+                            <a v-for="(option, key, index) in per_page_options" :key="index" class="dropdown-item" href="" @click.prevent="perPageHandler(option)" v-bind:class="{ 'is-active':  (option == per_page)}">
+                                {{option}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 <!-- Number of rows per page ends here -->
-<!--
-                <div class="input-group col-sm-2">
-                    <input type="number" class="form-control" :min="start" :max="totalPages" placeholder="Go to page" @keyup.enter="gotoPage" v-model.number="go_to_page">
-                </div> -->
+                <div class="field vbt-go-to-page">
+                    <div class="control">
+                        <input class="input is-primary" type="number" placeholder="Go to page" :min="start" :max="totalPages" @keyup.enter="gotoPage" v-model.number="go_to_page">
+                    </div>
+                </div>
             </ul>
         </nav>
     </div>
@@ -90,7 +98,7 @@
             per_page_options: {
                 type: Array,
                 default: function() {
-                    return [5,10,15]
+                    return [5, 10, 15]
                 }
             }
         },
@@ -98,7 +106,8 @@
             return {
                 start: (this.page + 0),
                 end: 0,
-                go_to_page: ""
+                go_to_page: "",
+                dropdown_active: false
             }
         },
         mounted() {
@@ -112,13 +121,13 @@
                 let go_to_page = this.go_to_page;
                 if (go_to_page >= 1 && go_to_page <= this.totalPages) {
                     this.pageHandler(go_to_page)
-                    if (!_.includes(this.range,go_to_page)) {
+                    if (!_.includes(this.range, go_to_page)) {
                         if (this.totalPages - go_to_page < this.num_of_visibile_pagination_buttons) {
                             this.end = this.totalPages;
-                            this.start = this.end - (this.num_of_visibile_pagination_buttons-1);;
+                            this.start = this.end - (this.num_of_visibile_pagination_buttons - 1);;
                         } else {
                             this.start = go_to_page;
-                            this.end = go_to_page + (this.num_of_visibile_pagination_buttons-1);
+                            this.end = go_to_page + (this.num_of_visibile_pagination_buttons - 1);
                         }
                     }
 
@@ -133,10 +142,10 @@
             },
             perPageHandler(option) {
                 this.$emit('update:per_page', option);
+                this.dropdown_active = false;
             },
         },
-        components: {
-        },
+        components: {},
         computed: {
             showLeftDot() {
                 return !(_.includes(this.range, 1));
@@ -217,7 +226,12 @@
     ul.pagination {
         margin-bottom: 0;
     }
+
     .vbt-per-page-dropdown {
+        margin-left: 8px;
+    }
+
+    .vbt-go-to-page {
         margin-left: 8px;
     }
 </style>
