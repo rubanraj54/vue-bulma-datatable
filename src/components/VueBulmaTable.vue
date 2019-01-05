@@ -3,7 +3,7 @@
         <div class="card">
             <header class="card-header">
                 <p class="card-header-title">
-                    Component
+                    {{card_title}}
                 </p>
             </header>
             <div class="card-content">
