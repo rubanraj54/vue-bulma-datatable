@@ -2,6 +2,11 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+// require('./mystyles.scss');
+import './assets/scss/custom.scss';
+window.$ = window.jQuery = require('jquery');
+window.axios = require('axios');
+
 
 Vue.config.productionTip = false
 
