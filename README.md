@@ -2,6 +2,8 @@
 
 > Advanced table based on Vue 2 and Bootstrap 4
 
+Under developement. Docs and demo coming soon
+
 ## Build Setup
 
 ``` bash
